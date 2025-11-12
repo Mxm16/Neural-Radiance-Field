@@ -102,7 +102,7 @@
     </div>
   </section>
 
-  <section id="part1" class="section">
+<section id="part1" class="section">
   <h2>Part 1 — Fit a Neural Field to a 2D Image</h2>
 
   <p>
@@ -122,36 +122,53 @@
     <li><strong>Training Steps:</strong> 2000 iterations</li>
   </ul>
 
-  <h3>Results</h3>
+  <h3>Training Progress</h3>
   <p>
-    <strong>Model Architecture:</strong> A 4-layer MLP with hidden width 256, taking positional encoded
-    coordinates as input and outputting RGB values. Positional encoding with L=10 allows the model
-    to represent high-frequency image structures.
+    The figures below show how the model gradually learns to reconstruct the image over time.
+    We visualize intermediate outputs at iterations <strong>1, 200, 1000,</strong> and <strong>2000</strong>
+    for both the provided test image and a custom image.
   </p>
-  <p>
-    <strong>Reconstructed Images:</strong> We saved intermediate and final reconstructions. The
-    following 2×2 grid shows the effect of different positional encoding frequencies and network widths:
-  </p>
-  <img src="assets/result_grid_2x2.png" alt="2D Neural Field grid comparison" class="img-large">
+  <div class="progress-grid">
+    <figure>
+      <img src="assets/compare_all.png" alt="Training progression on provided image">
+      <figcaption>Provided image — reconstruction over iterations.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/compare_all1.png" alt="Training progression on custom image">
+      <figcaption>Custom image — reconstruction over iterations.</figcaption>
+    </figure>
+  </div>
 
+  <h3>Hyperparameter Comparison</h3>
   <p>
-    <strong>PSNR Curve:</strong> PSNR improves steadily across training iterations. For the best configuration
-    (L=10, width=256), PSNR reaches around 32 dB, indicating high reconstruction quality.
+    The following grids compare reconstructions across different combinations of positional encoding
+    frequency (<em>L ∈ {2, 10}</em>) and network width (<em>{64, 256}</em>).
+    Higher frequencies and wider networks yield sharper, more detailed reconstructions.
+  </p>
+  <img src="assets/compare_LW_grid.png" alt="2D Neural Field comparison grid" class="img-large">
+  <img src="assets/hyperparameter_comparison.png" alt="2D Neural Field hyperparameter comparison" class="img-large">
+
+  <h3>PSNR Curve</h3>
+  <p>
+    PSNR steadily improves throughout training. The configuration with <em>L = 10</em> and
+    <em>width = 256</em> achieves the highest PSNR of approximately <strong>32 dB</strong>,
+    indicating high-quality reconstruction.
   </p>
   <img src="assets/psnr_curve.png" alt="PSNR curve for 2D neural field" class="img-medium">
 
+  <h3>Analysis &amp; Summary</h3>
   <p>
-    <strong>Analysis:</strong> Higher positional encoding frequencies capture finer spatial details,
-    while wider networks provide more representational capacity. Low-frequency or narrow networks produce
-    blurrier reconstructions. This demonstrates the trade-off between model capacity and positional encoding.
+    <strong>Observations:</strong> Increasing the positional encoding frequency allows the model
+    to capture finer spatial variations, while larger network width increases representational capacity.
+    Low-frequency or narrow networks produce smoother, blurrier results. The combination of
+    <em>L = 10</em> and <em>width = 256</em> achieves the best balance between fidelity and efficiency.
   </p>
-
-  <h3>Summary of Deliverables Shown on This Page</h3>
   <ul>
-    <li><strong>Model description:</strong> Input size, network depth & width, activation functions, learning rate.</li>
-    <li><strong>Training progression:</strong> PSNR curve visualizing model convergence over iterations.</li>
-    <li><strong>Reconstruction results:</strong> Final reconstructed images for all 2×2 combinations of L and width.</li>
-    <li><strong>Comparative analysis:</strong> Observations about how frequency and width affect reconstruction quality.</li>
+    <li><strong>Model description:</strong> Network depth, width, and positional encoding setup.</li>
+    <li><strong>Training progression:</strong> Intermediate reconstructions on both provided and custom images.</li>
+    <li><strong>Reconstruction results:</strong> Final 2×2 grid comparison of different L and width combinations.</li>
+    <li><strong>PSNR curve:</strong> Quantitative convergence trend during training.</li>
+    <li><strong>Analysis:</strong> Discussion of how encoding frequency and network size affect image quality.</li>
   </ul>
 </section>
 
