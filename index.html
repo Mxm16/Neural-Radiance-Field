@@ -1,101 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS180/280 Final Project: Neural Radiance Fields</title>
-  <style>
-    body {
-      font-family: "Helvetica", sans-serif;
-      line-height: 1.6;
-      max-width: 900px;
-      margin: auto;
-      padding: 40px;
-      background-color: #fafafa;
-      color: #222;
-    }
-    h1, h2 {
-      color: #222;
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 5px;
-    }
-    h3 {
-      color: #444;
-    }
-    img, video {
-      max-width: 100%;
-      border-radius: 10px;
-      margin: 10px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .section {
-      margin-bottom: 60px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 10px;
-    }
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #777;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Radiance Fields (NeRF) Project</title>
+<style>
+  body {
+    font-family: "Inter", "Helvetica", sans-serif;
+    margin: 0;
+    background: #f8f9fb;
+    color: #222;
+    line-height: 1.7;
+  }
+  header {
+    background: linear-gradient(135deg, #007bff, #00c4ff);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  header h1 { font-size: 2.5em; margin-bottom: 10px; }
+  header p { font-size: 1.1em; opacity: 0.9; }
+
+  main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 40px 20px;
+  }
+
+  section {
+    background: white;
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+  section h2 {
+    color: #007bff;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 5px;
+  }
+  h3 {
+    color: #444;
+    margin-top: 20px;
+  }
+  ul {
+    margin-left: 20px;
+  }
+  img, video {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 10px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+  }
+  footer {
+    text-align: center;
+    color: #666;
+    padding: 30px;
+    font-size: 0.9em;
+  }
+</style>
 </head>
 
 <body>
+<header>
   <h1>Neural Radiance Fields (NeRF) Project</h1>
-  <p><strong>Author:</strong> Your Name<br>
-     <strong>Course:</strong> CS180 / CS280 - Computer Vision<br>
-     <strong>Date:</strong> Fall 2025</p>
+  <p>CS180 / CS280 - Computer Vision & Computational Imaging</p>
+  <p><strong>Author:</strong> Your Name | <strong>Semester:</strong> Fall 2025</p>
+</header>
 
-  <div class="section">
-    <h2>Part 0: Camera Calibration & Data Preparation</h2>
-    <p>Using COLMAP and Viser to estimate camera poses and generate dataset (.npz).</p>
+<main>
+  <section id="overview">
+    <h2>Overview</h2>
+    <p>
+      This project implements a full Neural Radiance Field (NeRF) pipeline from scratch,
+      following the assignments of <strong>CS180/CS280</strong>.
+      It covers camera calibration, 2D neural field fitting, and 3D neural rendering with
+      both synthetic (Lego) and real-world data.
+    </p>
+  </section>
+
+  <section id="part0">
+    <h2>Part 0 — Camera Calibration and 3D Scanning</h2>
+    <p>
+      In this stage, we used <strong>COLMAP</strong> and <strong>Viser</strong> to estimate camera poses and reconstruct
+      a sparse point cloud from multi-view images. The results were exported as a custom dataset
+      in <code>.npz</code> format for NeRF training.
+    </p>
+    <h3>Deliverables</h3>
+    <ul>
+      <li>Two screenshots of Viser visualizing camera frustums.</li>
+      <li>Generated <code>.npz</code> dataset (images, c2ws, focal).</li>
+    </ul>
     <div class="grid">
-      <img src="assets/viser_frustums_1.png" alt="Viser Frustums 1">
-      <img src="assets/viser_frustums_2.png" alt="Viser Frustums 2">
+      <img src="assets/viser_frustums_1.png" alt="Viser frustums 1">
+      <img src="assets/viser_frustums_2.png" alt="Viser frustums 2">
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>Part 1: Fit a Neural Field to a 2D Image</h2>
-    <p>MLP + Positional Encoding trained to reconstruct a 2D image.</p>
-    <img src="assets/result_grid_2x2.png" alt="2D Field Grid">
-    <h3>Training Progress</h3>
-    <img src="assets/progression_test.png" alt="Training Progress">
+  <section id="part1">
+    <h2>Part 1 — Fit a Neural Field to a 2D Image</h2>
+    <p>
+      Here, we trained a simple MLP with positional encoding to learn a continuous 2D neural field
+      representation of an image. This step demonstrates how neural fields can represent
+      high-frequency image details via Fourier feature mappings.
+    </p>
+    <h3>Deliverables</h3>
+    <ul>
+      <li>Model structure description (layers, width, learning rate, etc.)</li>
+      <li>Reconstruction results on provided and custom images.</li>
+      <li>PSNR curve over training iterations.</li>
+      <li>2×2 grid visualization: max frequency × width combinations.</li>
+    </ul>
+    <img src="assets/result_grid_2x2.png" alt="2D Neural Field grid">
     <h3>PSNR Curve</h3>
-    <img src="assets/psnr_curve.png" alt="PSNR Curve">
-  </div>
+    <img src="assets/psnr_curve.png" alt="PSNR curve for 2D field">
+  </section>
 
-  <div class="section">
-    <h2>Part 2: Neural Radiance Field (Lego Scene)</h2>
-    <p>Implementing volume rendering and training NeRF on the synthetic Lego dataset.</p>
+  <section id="part2">
+    <h2>Part 2 — Fit a Neural Radiance Field (Lego Scene)</h2>
+    <p>
+      Implemented a full NeRF model with volumetric rendering. Trained on the
+      <strong>Lego synthetic dataset</strong> to learn a 3D radiance field.
+      Each rendered image is generated by integrating densities and colors along camera rays.
+    </p>
+    <h3>Deliverables</h3>
+    <ul>
+      <li>Implementation details of Parts 2.1–2.5 (rays, sampling, NeRF model, volume rendering).</li>
+      <li>Viser visualization of sampled points and rays.</li>
+      <li>Predicted render vs ground truth images.</li>
+      <li>PSNR curve for training.</li>
+      <li>Spherical rendering video of the Lego scene.</li>
+    </ul>
     <div class="grid">
-      <img src="assets/viser_rays.png" alt="Viser Rays">
-      <img src="assets/psnr_nerf.png" alt="PSNR Curve for NeRF">
+      <img src="assets/viser_rays.png" alt="Rays visualization">
+      <img src="assets/psnr_nerf.png" alt="NeRF PSNR curve">
     </div>
-    <h3>Rendered Video</h3>
+    <h3>Spherical Render Video</h3>
     <video controls>
       <source src="assets/lego_render.mp4" type="video/mp4">
       Your browser does not support video playback.
     </video>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>Part 2.6: Train with My Own Data</h2>
-    <p>Collected object dataset and trained a NeRF model from scratch.</p>
+  <section id="part26">
+    <h2>Part 2.6 — Training NeRF with My Own Data</h2>
+    <p>
+      Captured a real-world object using multiple camera poses and trained a NeRF model
+      from scratch. Rendered novel views demonstrate generalization and geometry recovery.
+    </p>
+    <h3>Deliverables</h3>
+    <ul>
+      <li>GIF showing novel view renderings of the object.</li>
+      <li>Loss curve over iterations.</li>
+      <li>Intermediate render results.</li>
+      <li>Notes on modified hyperparameters or architecture.</li>
+    </ul>
     <div class="grid">
-      <img src="assets/my_object.gif" alt="My Object GIF">
-      <img src="assets/loss_curve.png" alt="Loss Curve">
-      <img src="assets/intermediate_render_1.png" alt="Intermediate Render">
+      <img src="assets/my_object.gif" alt="My object novel view">
+      <img src="assets/loss_curve.png" alt="Loss curve">
+      <img src="assets/intermediate_render_1.png" alt="Intermediate render">
     </div>
-  </div>
+  </section>
 
-  <footer>
-    © 2025 Your Name — UC Berkeley GLOBE / CS180 NeRF Project
-  </footer>
+  <section id="conclusion">
+    <h2>Conclusion</h2>
+    <p>
+      Through this project, I implemented the complete NeRF pipeline and visualized how
+      neural networks can represent 3D scenes from 2D observations.
+      The experiment demonstrates the power of coordinate-based MLPs and differentiable
+      volume rendering for novel view synthesis.
+    </p>
+  </section>
+</main>
+
+<footer>
+  © 2025 Your Name — UC Berkeley GLOBE / CS180 NeRF Project
+</footer>
 </body>
 </html>
