@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS180/280 Final Project: Neural Radiance Fields</title>
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: auto;
+      padding: 40px;
+      background-color: #fafafa;
+      color: #222;
+    }
+    h1, h2 {
+      color: #222;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+    h3 {
+      color: #444;
+    }
+    img, video {
+      max-width: 100%;
+      border-radius: 10px;
+      margin: 10px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .section {
+      margin-bottom: 60px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Neural Radiance Fields (NeRF) Project</h1>
+  <p><strong>Author:</strong> Your Name<br>
+     <strong>Course:</strong> CS180 / CS280 - Computer Vision<br>
+     <strong>Date:</strong> Fall 2025</p>
+
+  <div class="section">
+    <h2>Part 0: Camera Calibration & Data Preparation</h2>
+    <p>Using COLMAP and Viser to estimate camera poses and generate dataset (.npz).</p>
+    <div class="grid">
+      <img src="assets/viser_frustums_1.png" alt="Viser Frustums 1">
+      <img src="assets/viser_frustums_2.png" alt="Viser Frustums 2">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Part 1: Fit a Neural Field to a 2D Image</h2>
+    <p>MLP + Positional Encoding trained to reconstruct a 2D image.</p>
+    <img src="assets/result_grid_2x2.png" alt="2D Field Grid">
+    <h3>Training Progress</h3>
+    <img src="assets/progression_test.png" alt="Training Progress">
+    <h3>PSNR Curve</h3>
+    <img src="assets/psnr_curve.png" alt="PSNR Curve">
+  </div>
+
+  <div class="section">
+    <h2>Part 2: Neural Radiance Field (Lego Scene)</h2>
+    <p>Implementing volume rendering and training NeRF on the synthetic Lego dataset.</p>
+    <div class="grid">
+      <img src="assets/viser_rays.png" alt="Viser Rays">
+      <img src="assets/psnr_nerf.png" alt="PSNR Curve for NeRF">
+    </div>
+    <h3>Rendered Video</h3>
+    <video controls>
+      <source src="assets/lego_render.mp4" type="video/mp4">
+      Your browser does not support video playback.
+    </video>
+  </div>
+
+  <div class="section">
+    <h2>Part 2.6: Train with My Own Data</h2>
+    <p>Collected object dataset and trained a NeRF model from scratch.</p>
+    <div class="grid">
+      <img src="assets/my_object.gif" alt="My Object GIF">
+      <img src="assets/loss_curve.png" alt="Loss Curve">
+      <img src="assets/intermediate_render_1.png" alt="Intermediate Render">
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Your Name — UC Berkeley GLOBE / CS180 NeRF Project
+  </footer>
+</body>
+</html>
