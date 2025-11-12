@@ -102,24 +102,59 @@
     </div>
   </section>
 
-  <section id="part1">
-    <h2>Part 1 — Fit a Neural Field to a 2D Image</h2>
-    <p>
-      Here, we trained a simple MLP with positional encoding to learn a continuous 2D neural field
-      representation of an image. This step demonstrates how neural fields can represent
-      high-frequency image details via Fourier feature mappings.
-    </p>
-    <h3>Deliverables</h3>
-    <ul>
-      <li>Model structure description (layers, width, learning rate, etc.)</li>
-      <li>Reconstruction results on provided and custom images.</li>
-      <li>PSNR curve over training iterations.</li>
-      <li>2×2 grid visualization: max frequency × width combinations.</li>
-    </ul>
-    <img src="assets/result_grid_2x2.png" alt="2D Neural Field grid">
-    <h3>PSNR Curve</h3>
-    <img src="assets/psnr_curve.png" alt="PSNR curve for 2D field">
-  </section>
+  <section id="part1" class="section">
+  <h2>Part 1 — Fit a Neural Field to a 2D Image</h2>
+
+  <p>
+    In this section, we trained a <strong>Multi-Layer Perceptron (MLP)</strong> with
+    <strong>positional encoding</strong> to learn a continuous 2D neural field representation of an image.
+    The network maps 2D coordinates <code>(x, y)</code> to RGB values <code>(r, g, b)</code>, demonstrating
+    how neural fields capture high-frequency image details via Fourier feature mappings.
+  </p>
+
+  <h3>Model &amp; Training Setup</h3>
+  <ul>
+    <li><strong>Input:</strong> 2D coordinates normalized to [−1, 1]</li>
+    <li><strong>Positional Encoding:</strong> Max frequency <em>L = 10</em>, using sin / cos features</li>
+    <li><strong>Network:</strong> 4-layer MLP, hidden width = 256, ReLU activation</li>
+    <li><strong>Loss:</strong> Mean Squared Error (MSE)</li>
+    <li><strong>Optimizer:</strong> Adam (learning rate = 1e−3)</li>
+    <li><strong>Training Steps:</strong> 2000 iterations</li>
+  </ul>
+
+  <h3>Results</h3>
+  <p>
+    <strong>Model Architecture:</strong> A 4-layer MLP with hidden width 256, taking positional encoded
+    coordinates as input and outputting RGB values. Positional encoding with L=10 allows the model
+    to represent high-frequency image structures.
+  </p>
+  <p>
+    <strong>Reconstructed Images:</strong> We saved intermediate and final reconstructions. The
+    following 2×2 grid shows the effect of different positional encoding frequencies and network widths:
+  </p>
+  <img src="assets/result_grid_2x2.png" alt="2D Neural Field grid comparison" class="img-large">
+
+  <p>
+    <strong>PSNR Curve:</strong> PSNR improves steadily across training iterations. For the best configuration
+    (L=10, width=256), PSNR reaches around 32 dB, indicating high reconstruction quality.
+  </p>
+  <img src="assets/psnr_curve.png" alt="PSNR curve for 2D neural field" class="img-medium">
+
+  <p>
+    <strong>Analysis:</strong> Higher positional encoding frequencies capture finer spatial details,
+    while wider networks provide more representational capacity. Low-frequency or narrow networks produce
+    blurrier reconstructions. This demonstrates the trade-off between model capacity and positional encoding.
+  </p>
+
+  <h3>Summary of Deliverables Shown on This Page</h3>
+  <ul>
+    <li><strong>Model description:</strong> Input size, network depth & width, activation functions, learning rate.</li>
+    <li><strong>Training progression:</strong> PSNR curve visualizing model convergence over iterations.</li>
+    <li><strong>Reconstruction results:</strong> Final reconstructed images for all 2×2 combinations of L and width.</li>
+    <li><strong>Comparative analysis:</strong> Observations about how frequency and width affect reconstruction quality.</li>
+  </ul>
+</section>
+
 
   <section id="part2">
     <h2>Part 2 — Fit a Neural Radiance Field (Lego Scene)</h2>
