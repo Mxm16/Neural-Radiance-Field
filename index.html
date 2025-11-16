@@ -75,15 +75,11 @@
   <section id="part0">
     <h2>Part 0 — Camera Calibration and 3D Scanning</h2>
     <p>
-      In this stage, we used <strong>COLMAP</strong> and <strong>Viser</strong> to estimate camera poses and reconstruct
+      In this stage, I used <strong>COLMAP</strong> and <strong>Viser</strong> to estimate camera poses and reconstruct
       a sparse point cloud from multi-view images. The results were exported as a custom dataset
       in <code>.npz</code> format for NeRF training.
     </p>
     <h3>Deliverables</h3>
-    <ul>
-      <li>Two screenshots of Viser visualizing camera frustums.</li>
-      <li>Generated <code>.npz</code> dataset (images, c2ws, focal).</li>
-    </ul>
     <div class="grid">
       <img src="assets/viser_frustums_1.png" alt="Viser frustums 1">
       <img src="assets/viser_frustums_2.png" alt="Viser frustums 2">
@@ -94,7 +90,7 @@
   <h2>Part 1 — Fit a Neural Field to a 2D Image</h2>
 
   <p>
-    In this section, we trained a <strong>Multi-Layer Perceptron (MLP)</strong> with
+    In this section, I trained a <strong>Multi-Layer Perceptron (MLP)</strong> with
     <strong>positional encoding</strong> to learn a continuous 2D neural field representation of an image.
     The network maps 2D coordinates <code>(x, y)</code> to RGB values <code>(r, g, b)</code>, demonstrating
     how neural fields capture high-frequency image details via Fourier feature mappings.
@@ -113,8 +109,7 @@
   <h3>Training Progress</h3>
   <p>
     The figures below show how the model gradually learns to reconstruct the image over time.
-    We visualize intermediate outputs at iterations <strong>1, 200, 1000,</strong> and <strong>2000</strong>
-    for both the provided test image and a custom image.
+    I visualize intermediate outputs at iterations for both the provided test image and a custom image.
   </p>
   <div class="progress-grid">
     <figure>
@@ -151,13 +146,6 @@
     Low-frequency or narrow networks produce smoother, blurrier results. The combination of
     <em>L = 10</em> and <em>width = 256</em> achieves the best balance between fidelity and efficiency.
   </p>
-  <ul>
-    <li><strong>Model description:</strong> Network depth, width, and positional encoding setup.</li>
-    <li><strong>Training progression:</strong> Intermediate reconstructions on both provided and custom images.</li>
-    <li><strong>Reconstruction results:</strong> Final 2×2 grid comparison of different L and width combinations.</li>
-    <li><strong>PSNR curve:</strong> Quantitative convergence trend during training.</li>
-    <li><strong>Analysis:</strong> Discussion of how encoding frequency and network size affect image quality.</li>
-  </ul>
 </section>
 
 
@@ -165,7 +153,7 @@
   <h2>Part 2 — Fit a Neural Radiance Field from Multi-view Images</h2>
 
   <p>
-    In this section, we implemented a full <strong>Neural Radiance Field (NeRF)</strong> model trained on
+    In this section, I implemented a full <strong>Neural Radiance Field (NeRF)</strong> model trained on
     the <strong>synthetic Lego multi-view dataset</strong>. The goal is to learn a continuous volumetric
     function <em>F(𝒙, d) → (σ, c)</em> that maps any 3D point <em>𝒙</em> and viewing direction <em>d</em> 
     to density and emitted color. Rendering is done by integrating these quantities along camera rays.
@@ -173,7 +161,7 @@
 
   <h3>Part 2.1 — Create Rays from Cameras</h3>
   <p>
-    We first converted pixels to camera rays by chaining three coordinate transformations:
+    I first converted pixels to camera rays by chaining three coordinate transformations:
   </p>
   <ol>
     <li><strong>Camera to World (c2w):</strong> Constructed from extrinsic matrices. The camera origin is <code>c2w[:3, 3]</code>.</li>
@@ -187,9 +175,9 @@
 
   <h3>Part 2.2 — Sampling</h3>
   <p>
-    For each training iteration, we sampled <strong>N = 512</strong> random rays from all training images.
+    For each training iteration, I sampled <strong>N = 512</strong> random rays from all training images.
     Along each ray, <strong>n<sub>samples</sub> = 64</strong> points were uniformly sampled between
-    <em>near = 2.0</em> and <em>far = 6.0</em>. During training, we added small random perturbations
+    <em>near = 2.0</em> and <em>far = 6.0</em>. During training, I added small random perturbations
     to sample locations to improve coverage and reduce overfitting:
   </p>
   <pre><code>t = t + torch.rand_like(t) * (t[1] - t[0])</code></pre>
@@ -199,9 +187,9 @@
 
   <h3>Part 2.3 — Dataloader Integration</h3>
   <p>
-    We implemented a <code>RaysData</code> class that returns batches of
+    I implemented a <code>RaysData</code> class that returns batches of
     <code>(ray_o, ray_d, pixel_color)</code> for training. It converts randomly selected pixel coordinates
-    into rays using the methods above. To verify correctness, we visualized the rays, camera frustums,
+    into rays using the methods above. To verify correctness, I visualized the rays, camera frustums,
     and sampled points using <strong>viser</strong>:
   </p>
 
@@ -233,7 +221,7 @@
 
   <h3>Part 2.5 — Volume Rendering</h3>
   <p>
-    We implemented the discrete volume rendering equation to integrate color along each ray:
+    I implemented the discrete volume rendering equation to integrate color along each ray:
   </p>
   <pre><code>C = Σₜ T(t) · (1 − exp(−σₜ Δₜ)) · cₜ,   where  T(t) = exp(−Σₖ₍ₖ&lt;t₎ σₖ Δₖ)</code></pre>
   <p>
@@ -243,7 +231,7 @@
 
   <h3>Training Visualization</h3>
   <p>
-    The model was trained for 1000 iterations using Adam (lr = 5e−4). We rendered validation
+    The model was trained for 1000 iterations using Adam (lr = 5e−4). I rendered validation
     views during training to visualize progression. The images below show predicted renderings
     at different stages of optimization:
   </p>
@@ -254,25 +242,17 @@
   </div>
 
   <p>
-    <strong>PSNR Curve:</strong> The validation PSNR steadily improves, reaching ≈26 dB after 1000 steps.
+    <strong>PSNR Curve:</strong> The validation PSNR steadily improves, reaching ≈26 dB after 3000 steps.
   </p>
   <img src="assets/psnr_curve1.png" alt="PSNR curve for Lego NeRF" class="img-medium">
 
   <h3>Spherical Rendering Video</h3>
   <p>
-    Using the provided <code>c2ws_test</code> camera poses, we rendered novel views of the Lego
+    Using the provided <code>c2ws_test</code> camera poses, I rendered novel views of the Lego
     scene along a circular trajectory. The final video demonstrates smooth 3D reconstruction
     and consistent lighting across viewpoints.
   </p>
   <img src="assets/spherical_render_26dB.gif" alt="render view">
-
-  <h3>Summary & Analysis</h3>
-  <p>
-    This part demonstrates how multi-view supervision enables learning of a volumetric scene
-    representation through differentiable rendering. The results show accurate geometry recovery,
-    high-frequency texture reconstruction, and smooth view interpolation, validating the full
-    NeRF pipeline implementation.
-  </p>
 </section>
 
 
@@ -300,7 +280,7 @@
 
   <h3>Training Loss & Validation PSNR</h3>
   <p>
-    I recorded the full training loss curve and periodic PSNR evaluation on held-out poses.
+    I recorded the full training loss curve and periodic PSNR evaluation on held-out poses.It takes about 2 hours but it is still a bit rough.
   </p>
   <img src="assets/loss.png" alt="Training loss curve and Validation PSNR curve" class="img-medium">
 
@@ -317,7 +297,7 @@
   <h3>Ordered Training-View Renderings (GIF)</h3>
   <p>
     Because my real-world captures do not follow a perfect circular trajectory, I computed
-    the azimuth angle of each training pose and sorted them. This produces a smooth,
+    the azimuth angle of each training pose and sorted them. This produces a rough but 
     360°-style camera motion using only my training views. The GIF below was generated
     from 60 such sorted training poses.
   </p>
