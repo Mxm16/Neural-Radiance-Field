@@ -266,7 +266,7 @@
   </div>
 
   <p>
-    <strong>PSNR Curve:</strong> The validation PSNR steadily improves, reaching ≈30 dB after 1000 steps.
+    <strong>PSNR Curve:</strong> The validation PSNR steadily improves, reaching ≈26 dB after 1000 steps.
   </p>
   <img src="assets/psnr_curve1.png" alt="PSNR curve for Lego NeRF" class="img-medium">
 
@@ -288,39 +288,56 @@
 </section>
 
 
-  <section id="part26">
-    <h2>Part 2.6 — Training NeRF with My Own Data</h2>
-    <p>
-      Captured a real-world object using multiple camera poses and trained a NeRF model
-      from scratch. Rendered novel views demonstrate generalization and geometry recovery.
-    </p>
-    <h3>Deliverables</h3>
-    <ul>
-      <li>GIF showing novel view renderings of the object.</li>
-      <li>Loss curve over iterations.</li>
-      <li>Intermediate render results.</li>
-      <li>Notes on modified hyperparameters or architecture.</li>
-    </ul>
-    <div class="grid">
-      <img src="assets/my_object.gif" alt="My object novel view">
-      <img src="assets/loss_curve.png" alt="Loss curve">
-      <img src="assets/intermediate_render_1.png" alt="Intermediate render">
-    </div>
-  </section>
+<section id="part26" class="section">
+  <h2>Part 2.6 — Training NeRF on My Own Captured Data</h2>
 
-  <section id="conclusion">
-    <h2>Conclusion</h2>
-    <p>
-      Through this project, I implemented the complete NeRF pipeline and visualized how
-      neural networks can represent 3D scenes from 2D observations.
-      The experiment demonstrates the power of coordinate-based MLPs and differentiable
-      volume rendering for novel view synthesis.
-    </p>
-  </section>
+  <p>
+    For this section, I captured my own real-world object using a handheld camera and generated
+    training data through COLMAP reconstruction. After converting the poses into NeRF-compatible
+    format, I trained a full NeRF model using the same volume-rendering pipeline from Part 2,
+    but with modified hyperparameters to better fit real-world data.
+  </p>
+
+  <h3>Training Setup</h3>
+  <p>
+    The model used a deeper TinyNeRF architecture:
+  </p>
+  <ul>
+    <li><strong>Network:</strong> TinyNeRF with width 256, positional encoding L<sub>xyz</sub>=10, L<sub>dir</sub>=4</li>
+    <li><strong>Ray batch size:</strong> 1024 rays per iteration</li>
+    <li><strong>Sampling:</strong> 64 points per ray, near=0.02, far=0.5</li>
+    <li><strong>Training iterations:</strong> 20,000</li>
+    <li><strong>Optimizer:</strong> Adam with learning rate decay (γ=0.995)</li>
+  </ul>
+
+  <h3>Training Loss & Validation PSNR</h3>
+  <p>
+    I recorded the full training loss curve and periodic PSNR evaluation on held-out poses.
+  </p>
+  <img src="assets/loss.png" alt="Training loss curve and Validation PSNR curve" class="img-medium">
+
+  <h3>Intermediate Rendered Views</h3>
+  <p>
+    Throughout training, I periodically rendered the validation image to visualize convergence.
+    Below are selected snapshots at different training iterations:
+  </p>
+  <div class="grid">
+    <img src="assets/intermediate.png" alt="iter render">
+     <img src="assets/frames.png" alt="frames">
+  </div>
+
+  <h3>Ordered Training-View Renderings (GIF)</h3>
+  <p>
+    Because my real-world captures do not follow a perfect circular trajectory, I computed
+    the azimuth angle of each training pose and sorted them. This produces a smooth,
+    360°-style camera motion using only my training views. The GIF below was generated
+    from 60 such sorted training poses.
+  </p>
+  <img src="assets/ordered_training_views.gif" alt="Ordered training views GIF" class="img-large">
+
+</section>
+
+
 </main>
-
-<footer>
-  © 2025 Your Name — UC Berkeley GLOBE / CS180 NeRF Project
-</footer>
 </body>
 </html>
