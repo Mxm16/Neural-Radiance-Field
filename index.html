@@ -72,19 +72,40 @@
 </header>
 
 <main>
-  <section id="part0">
-    <h2>Part 0 — Camera Calibration and 3D Scanning</h2>
-    <p>
-      In this stage, I used <strong>COLMAP</strong> and <strong>Viser</strong> to estimate camera poses and reconstruct
-      a sparse point cloud from multi-view images. The results were exported as a custom dataset
-      in <code>.npz</code> format for NeRF training.
-    </p>
-    <h3>Deliverables</h3>
-    <div class="grid">
-      <img src="assets/viser_frustums_1.png" alt="Viser frustums 1">
-      <img src="assets/viser_frustums_2.png" alt="Viser frustums 2">
-    </div>
-  </section>
+<section id="part0">
+  <h2>Part 0 — Camera Calibration and 3D Scanning</h2>
+
+  <p>
+    In this part, I calibrated the camera using ArUco markers, captured multi-view images of the
+    target object, estimated camera poses using <code>solvePnP</code>, and constructed the final
+    NeRF-ready dataset. The processed images, poses, and intrinsics were saved in <code>.npz</code> format.
+  </p>
+
+  <h3>Deliverables</h3>
+
+  <ul>
+    <li>Example calibration images and the recovered intrinsic matrix <code>K</code></li>
+    <li>Camera pose visualization (Viser frustum screenshots)</li>
+    <li>Undistorted vs. original image comparison</li>
+  </ul>
+  
+  <pre><code>Final image shape: (62, 400, 400, 3)
+Focal: 386.57093262883313
+New intrinsics K:
+[[389.6893997    0.         195.09427456]
+ [  0.         383.45246556 261.23371531]
+ [  0.           0.           1.        ]]
+[DONE] saved dataset → my_data_square.npz
+  </code></pre>
+  
+  <div class="grid">
+    <img src="assets/IMG_6942.heic.jpg" alt=">Example calibration images">
+    <img src="assets/undistort_example.png" alt="Undistorted vs. original image comparison">
+    <img src="assets/viser_frustums_1.png" alt="Viser frustums top view">
+    <img src="assets/viser_frustums_2.png" alt="Viser frustums side view">
+  </div>
+</section>
+
 
 <section id="part1" class="section">
   <h2>Part 1 — Fit a Neural Field to a 2D Image</h2>
