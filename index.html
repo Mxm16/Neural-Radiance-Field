@@ -122,12 +122,25 @@
     </figure>
   </div>
 
-  <h3>Hyperparameter Comparison</h3>
-  <p>
-    The following grids compare reconstructions across different combinations of positional encoding
-    frequency (<em>L ∈ {2, 10}</em>) and network width (<em>{64, 256}</em>).
-    Higher frequencies and wider networks yield sharper, more detailed reconstructions.
-  </p>
+<h3>Hyperparameter Comparison</h3>
+<p>
+  We compare reconstructions across four settings by varying positional encoding frequency
+  (<em>L ∈ {2, 10}</em>) and network width (<em>{64, 256}</em>). Higher <em>L</em> introduces more
+  high-frequency basis functions, enabling sharper edges and finer textures. Wider networks
+  provide greater capacity and reduce smoothing artifacts.
+</p>
+
+<p>
+  Overall trends:
+  <ul>
+    <li><em>L=2</em>: smoother, blurrier outputs regardless of width.</li>
+    <li><em>L=10</em>: noticeably sharper details.</li>
+    <li><em>width=64</em>: limited capacity, struggles with fine structure.</li>
+    <li><em>width=256</em>: consistently better fidelity.</li>
+  </ul>
+  The combination <em>L=10, width=256</em> yields the cleanest and most detailed reconstruction.
+</p>
+
   <img src="assets/compare_LW_grid.png" alt="2D Neural Field comparison grid" class="img-large">
   <img src="assets/hyperparameter_comparison.png" alt="2D Neural Field hyperparameter comparison" class="img-large">
 
